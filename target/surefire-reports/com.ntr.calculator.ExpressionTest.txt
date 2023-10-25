@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: com.ntr.hrank.AlgorithmsTest
+Test set: com.ntr.calculator.ExpressionTest
 -------------------------------------------------------------------------------
-Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in com.ntr.hrank.AlgorithmsTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in com.ntr.calculator.ExpressionTest

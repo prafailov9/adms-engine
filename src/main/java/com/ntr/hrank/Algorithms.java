@@ -71,10 +71,10 @@ public class Algorithms {
                 }
             }
             if (c1.data > c2.data) {
-               if (!list.contains(c2.data)) {
-                   list.add(c2.data);
-                   list.add(c1.data);
-               }
+                if (!list.contains(c2.data)) {
+                    list.add(c2.data);
+                    list.add(c1.data);
+                }
             }
             c1 = c1.next;
             c2 = c2.next;
@@ -266,6 +266,200 @@ public class Algorithms {
 
         return i;
     }
+
+    public static boolean array123(int[] nums) {
+        int seq = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (seq + 1 == nums[i]) {
+                seq++;
+            }
+        }
+        return seq == 3;
+    }
+
+    public static int stringMatch(String a, String b) {
+        // Figure which string is shorter.
+        int len = Math.min(a.length(), b.length());
+        int count = 0;
+
+        // Look at both substrings starting at i
+        for (int i = 0; i < len - 1; i++) {
+            String aSub = a.substring(i, i + 2);
+            String bSub = b.substring(i, i + 2);
+            if (aSub.equals(bSub)) {  // Use .equals() with strings
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static String stringX(String str) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < str.length(); i++) {
+            char current = str.charAt(i);
+            if (i >= 1 && i < str.length() - 1) {
+                if (current != 'x') {
+                    sb.append(current);
+                }
+            } else {
+                sb.append(current);
+            }
+        }
+        return sb.toString();
+    }
+
+
+
+    /**
+     * Find the larges span of the same number in an array. A span is the number of elements between the same element, including them:
+     * maxSpan([1, 2, 1, 1, 3]) → 4
+     * maxSpan([1, 4, 2, 1, 4, 1, 4]) → 6
+     * maxSpan([1, 4, 2, 1, 4, 4, 4]) → 6
+     * Determine all possible spans and return the largest.
+     */
+    public static int maxSpan(int[] nums) {
+        if (nums.length < 1) {
+            return 0;
+        }
+        int maxSpan = 1;
+        Map<Integer, Integer> firstFoundPositions = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int current = nums[i];
+            if (!firstFoundPositions.containsKey(current)) {
+                // save every new element and the position where it was found
+                firstFoundPositions.put(current, i);
+            } else {
+                // subtract the current position(i) with the first position where
+                // the element was found and add 1 to get the span.
+                maxSpan = i - firstFoundPositions.get(current) + 1;
+            }
+        }
+        return maxSpan;
+    }
+
+    /**
+     * Fuck this shit
+     */
+    public static int[] fix34(int[] nums) {
+        int[] fixed34 = new int[nums.length];
+
+        for (int i = 0; i < nums.length; i++) {
+            int current = nums[i];
+            fixed34[i] = current;
+            if (current == 3) {
+                // go forward, check if next elem is not 4
+                int k = i + 1;
+                while (k < nums.length && nums[k] != 4) {
+                    k++;
+                }
+                if (k < nums.length) { // avoiding index out of bounds
+                    // found 4
+                    int temp = nums[k];
+                    nums[k] = nums[i + 1];
+                    nums[i + 1] = temp;
+                } else {
+                    // go backwards, find first 4, don't steal 4s from other 3s, that's not cool brah :/
+                    int j = i - 1;
+                    while (j - 1 >= 0) {
+                        if (nums[j] == 4 && nums[j - 1] != 3) {
+                            break;
+                        }
+                        j--;
+                    }
+                    if (j >= 0) { // swap in both arrays
+                        int temp = nums[j];
+                        nums[j] = nums[i + 1];
+                        fixed34[j] = nums[i + 1];
+                        nums[i + 1] = temp;
+                    }
+                }
+            }
+        }
+        return fixed34;
+    }
+
+
+    public static int[] fix45WithChatGPTSmile(int[] nums) {
+        int j = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 4) {
+                while (nums[j] != 5 || (j > 0 && nums[j - 1] == 4)) {
+                    j++;
+                }
+                // Swap nums[i+1] and nums[j]
+                int temp = nums[i + 1];
+                nums[i + 1] = nums[j];
+                nums[j] = temp;
+            }
+        }
+        return nums;
+    }
+
+
+    /**
+     * canBalance([1, 1, 1, 2, 1]) → true
+     * canBalance([2, 1, 1, 2, 1]) → false
+     * canBalance([10, 10]) → true
+     */
+    public static boolean canBalance(int[] nums) {
+        // edge cases
+        if (nums.length <= 1) {
+            return false;
+        }
+        if (nums.length == 2) {
+            return nums[0] == nums[1];
+        }
+        // real code ;) ;* ;P
+        int sumFirst = 0;
+        int sumSecond = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i < nums.length / 2) {
+                sumFirst += nums[i];
+            } else {
+                sumSecond += nums[i];
+            }
+        }
+        // return if equal on first split
+        if (sumFirst == sumSecond) {
+            return true;
+        } else if (sumFirst > sumSecond) {
+            int i = nums.length / 2;
+            while (sumFirst > sumSecond) {
+                sumFirst -= nums[i];
+                sumSecond += nums[i];
+                i--;
+            }
+            return sumFirst == sumSecond;
+        } else {
+            int i = nums.length / 2;
+            while (sumFirst < sumSecond) {
+                sumFirst += nums[i];
+                sumSecond -= nums[i];
+                i++;
+            }
+            return sumFirst == sumSecond;
+        }
+    }
+
+    public static boolean canBalanceWithChatGPTSmile(int[] nums) {
+        int totalSum = 0;
+        // gets the total sum
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        int cumulativeSum = 0;
+        // sums each number successively and compares to the total on each step
+        for (int num : nums) {
+            cumulativeSum += num;
+            if (cumulativeSum == totalSum - cumulativeSum) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
 
