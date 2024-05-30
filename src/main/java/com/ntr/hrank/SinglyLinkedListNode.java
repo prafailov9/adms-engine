@@ -1,6 +1,6 @@
 package com.ntr.hrank;
 
-class SinglyLinkedListNode {
+public class SinglyLinkedListNode {
     int data;
     SinglyLinkedListNode next;
 

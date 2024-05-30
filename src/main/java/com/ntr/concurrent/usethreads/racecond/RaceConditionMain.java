@@ -10,7 +10,7 @@ public class RaceConditionMain {
 
         Runnable task = () -> {
             for (int i = 0; i < ITERATIONS; i++) {
-                longWrapper.increment();
+                longWrapper.incrementLong();
             }
         };
 

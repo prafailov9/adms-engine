@@ -1,7 +1,0 @@
-com/ntr/AppTest.class
-com/ntr/hrank/AlgorithmsTest.class
-com/ntr/calculator/ExpressionTest.class
-com/ntr/ds/list/DoublyLinkedListTest.class
-com/ntr/ds/queue/RingBufferTest.class
-com/ntr/ds/queue/QueueImplTest.class
-com/ntr/calculator/converter/PostfixExpressionConverterTest.class

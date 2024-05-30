@@ -15,9 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class LRUCache<K, V> implements Cache<K, V> {
 
-    private Map<K, CacheObject<K, V>> map;
-    private LinkedList<CacheObject<K, V>> queue;
-    private int capacity;
+    private final Map<K, CacheObject<K, V>> map;
+    private final LinkedList<CacheObject<K, V>> queue;
+    private final int capacity;
 
     public LRUCache(final int capacity) {
         this.capacity = capacity;
@@ -26,11 +26,7 @@ public class LRUCache<K, V> implements Cache<K, V> {
     }
 
     /**
-     * This queue implementation is a Ring Buffer - it will automatically overwrite the last node(LRU data) when its capacity is hit.
      *
-     * @param key
-     * @param value
-     * @return
      */
     @Override
     public void put(K key, V value) {

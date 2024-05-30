@@ -1,6 +1,6 @@
 package com.ntr.hrank;
 
-class DoublyLinkedListNode {
+public class DoublyLinkedListNode {
     public int data;
     public DoublyLinkedListNode next;
     public DoublyLinkedListNode prev;

@@ -24,9 +24,7 @@ public class RingBuffer<E> extends AbstractQueue<E> {
             log.info("Queue is full. Overwriting last element");
             overwrite(newNode);
             rear.data = newNode.data;
-            return;
-        }
-        if (isEmpty()) {
+        } else if (isEmpty()) {
             front = rear = newNode;
         } else {
             front.next = newNode;
@@ -39,7 +37,7 @@ public class RingBuffer<E> extends AbstractQueue<E> {
     @Override
     public E poll() {
         if (isEmpty()) {
-            log.info("Queue is empty. Returning null value.");
+            log.info("Queue is empty.");
             return null;
         }
         E data = rear.data;
@@ -54,7 +52,8 @@ public class RingBuffer<E> extends AbstractQueue<E> {
         return data;
     }
 
-    public int capacity() { return capacity; }
+    public int capacity() {
+        return capacity; }
 
     /**
      * will overwrite the rear node with the new node and attach it to the front
