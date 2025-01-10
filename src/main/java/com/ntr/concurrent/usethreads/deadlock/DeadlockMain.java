@@ -1,5 +1,7 @@
 package com.ntr.concurrent.usethreads.deadlock;
 
+import static java.lang.Thread.currentThread;
+
 public class DeadlockMain {
 
     String text = "text";
@@ -8,9 +10,9 @@ public class DeadlockMain {
         Processor processor = new Processor();
 
         Runnable task = () -> {
-            System.out.printf("IN %s, processor name is %s\n", Thread.currentThread().getName(), processor.name);
+            System.out.printf("IN %s, processor name is %s\n", currentThread().getName(), processor.name);
             processor.name = "new-name";
-            System.out.printf("Thread %s, changed processor name to %s\n", Thread.currentThread().getName(), processor.name);
+            System.out.printf("Thread %s, changed processor name to %s\n", currentThread().getName(), processor.name);
         };
 
         Thread t1 = new Thread(task);

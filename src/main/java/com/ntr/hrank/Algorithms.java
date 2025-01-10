@@ -2220,12 +2220,10 @@ public class Algorithms {
         }
     }
 
-    /**
-     *  - keep going left until null
-     *  -
-     */
-    public static void preOrder(Node root) {
+    // Complete the minimumSwaps function below.
+    static int minimumSwaps(int[] arr) {
 
+        return 1;
     }
 
 }
