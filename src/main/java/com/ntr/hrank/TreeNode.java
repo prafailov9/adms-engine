@@ -1,20 +1,25 @@
 package com.ntr.hrank;
 
 public class TreeNode<T> {
-    T val;
-    TreeNode<T> left;
-    TreeNode<T> right;
 
-    TreeNode() {
-    }
+  public T val;
+  public TreeNode<T> left;
+  public TreeNode<T> right;
 
-    TreeNode(T val) {
-        this.val = val;
-    }
+  public TreeNode(T val) {
+    this(val, null, null);
+  }
 
-    TreeNode(T val, TreeNode<T> left, TreeNode<T> right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
+  public TreeNode(T val, TreeNode<T> left, TreeNode<T> right) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+  }
+
+  @Override
+  public String toString() {
+    return "TreeNode{" +
+        "val=" + val +
+        '}';
+  }
 }

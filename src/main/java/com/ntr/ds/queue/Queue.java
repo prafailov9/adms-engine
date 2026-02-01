@@ -6,6 +6,8 @@ public interface Queue<E> extends Iterable<E> {
 
     E poll();
 
+    E peek();
+
     boolean isEmpty();
 
     int size();
