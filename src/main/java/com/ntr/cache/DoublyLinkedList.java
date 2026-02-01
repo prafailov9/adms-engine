@@ -1,6 +1,6 @@
 package com.ntr.cache;
 
-import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class DoublyLinkedList<E> {
@@ -37,7 +37,7 @@ public class DoublyLinkedList<E> {
      */
     public E remove() {
         if (isEmpty()) {
-            throw new RuntimeException("List is empty!");
+            throw new NoSuchElementException("List is empty!");
         }
         E data = tail.data;
         synchronized (lock) {
