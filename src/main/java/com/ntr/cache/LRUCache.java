@@ -45,6 +45,7 @@ public class LRUCache<K, V> implements Cache<K, V> {
         CacheObject<K, V> obj = map.get(key);
 
         if (obj != null) {
+            // add object to front of queue
             queue.remove(obj);
             queue.addFirst(obj);
             return Optional.of(obj.getValue());
