@@ -8,13 +8,10 @@ import org.junit.jupiter.api.Test;
 class ProdConsTest {
 
   List<Integer> queue = new ArrayList<>();
-  private final Object dickwater = new Object();
+  private final Object lock = new Object();
   private static final int CAPACITY = 10;
   private boolean terminate = false;
 
-  /**
-   * [1]: public static void main(String[] args)
-   */
   @Test
   public void prodConsTest() {
     // when creating a threat, we are submitting a task to run at a later time(when we call .start())
@@ -37,14 +34,14 @@ class ProdConsTest {
     int i = 1;
     int cycles = 100;
     System.out.println("PRODUCER tries to get in...");
-    synchronized (dickwater) {
-      System.out.println("PRODUCER is in!");
+    synchronized (lock) {
+      System.out.println("PRODUCER: in!");
       while (!terminate) {
-        System.out.println("PRODUCER QUEUE size: " + queue.size());
+        System.out.println("PRODUCER: QUEUE size: " + queue.size());
         while (queue.size() == CAPACITY) {
           try {
             System.out.println("PRODUCER waiting...");
-            dickwater.wait();
+            lock.wait();
           } catch (InterruptedException ex) {
             System.out.println("Interrupted");
             Thread.currentThread().interrupt();
@@ -56,7 +53,7 @@ class ProdConsTest {
           terminate = true;
         }
         i++;
-        dickwater.notifyAll();
+        lock.notifyAll();
       }
     }
 
@@ -64,14 +61,14 @@ class ProdConsTest {
 
   void consume() {
     System.out.println("CONSUMER tries to get in...");
-    synchronized (dickwater) {
-      System.out.println("CONSUMER is in!");
+    synchronized (lock) {
+      System.out.println("CONSUMER: in!");
       while (!terminate || !queue.isEmpty()) {
-        System.out.println("CONSUMER QUEUE size: " + queue.size());
+        System.out.println("CONSUMER: QUEUE size: " + queue.size());
         while (queue.isEmpty()) {
           try {
             System.out.println("consumer waiting...");
-            dickwater.wait();// consumer thread stops and waits for the producer to call it
+            lock.wait();// consumer thread stops and waits for the producer to call it
           } catch (InterruptedException ex) {
             System.out.println("Interrupted");
             Thread.currentThread().interrupt();
@@ -79,7 +76,7 @@ class ProdConsTest {
         }
         int i = queue.removeFirst();
         System.out.println("[" + i + "]& -> " + Thread.currentThread().getName() + ": " + i);
-        dickwater.notifyAll();
+        lock.notifyAll();
       }
     }
   }
