@@ -7,17 +7,18 @@ import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.countInternalNodes;
 import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.countLeaves;
 import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.countNodes;
 import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.countSingleChildNodes;
+import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.countUniquePaths;
 import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.findMax;
 import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.heightDifference;
 import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.isChain;
+import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.longestPathSum;
 import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.maxDepth;
+import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.maxRootToLeafSum;
 import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.sumLeaves;
 import static com.ntr.hrank.rec.RecursiveTreeAlgorithms.treeSum;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.ntr.hrank.TreeNode;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class RecursiveTreeAlgorithmsTest {
@@ -521,5 +522,199 @@ class RecursiveTreeAlgorithmsTest {
     assertEquals(0, res);
   }
 
+  @Test
+  public void longestPathSumTest() {
+    int res;
+    // left subtree
+    TreeNode<Integer> l5 = new TreeNode<>(1);
+
+    TreeNode<Integer> l4 = new TreeNode<>(5, l5, null);
+    TreeNode<Integer> l3 = new TreeNode<>(5);
+
+    TreeNode<Integer> l2 = new TreeNode<>(3, l3, l4);
+    TreeNode<Integer> l1 = new TreeNode<>(1, l2, null);
+    // right subtree
+    TreeNode<Integer> r7 = new TreeNode<>(1);
+    TreeNode<Integer> r6 = new TreeNode<>(3, null, r7);
+    TreeNode<Integer> r5 = new TreeNode<>(1);
+
+    TreeNode<Integer> r4 = new TreeNode<>(1);
+    TreeNode<Integer> r3 = new TreeNode<>(2, r5, r6);
+
+    TreeNode<Integer> r2 = new TreeNode<>(1, r3, r4);
+    TreeNode<Integer> r1 = new TreeNode<>(1, null, r2);
+    // root
+    TreeNode<Integer> root = new TreeNode<>(1, l1, r1);
+
+    res = longestPathSum(root);
+    assertEquals(9, res);
+
+  }
+
+  @Test
+  public void countUniquePathsTest() {
+    int res;
+    // left subtree
+    TreeNode<Integer> l5 = new TreeNode<>(1);
+
+    TreeNode<Integer> l4 = new TreeNode<>(5, l5, null);
+    TreeNode<Integer> l3 = new TreeNode<>(5);
+
+    TreeNode<Integer> l2 = new TreeNode<>(3, l3, l4);
+    TreeNode<Integer> l1 = new TreeNode<>(1, l2, null);
+    // right subtree
+    TreeNode<Integer> r7 = new TreeNode<>(1);
+    TreeNode<Integer> r6 = new TreeNode<>(3, null, r7);
+    TreeNode<Integer> r5 = new TreeNode<>(1);
+
+    TreeNode<Integer> r4 = new TreeNode<>(1);
+    TreeNode<Integer> r3 = new TreeNode<>(2, r5, r6);
+
+    TreeNode<Integer> r2 = new TreeNode<>(1, r3, r4);
+    TreeNode<Integer> r1 = new TreeNode<>(1, null, r2);
+    // root
+    TreeNode<Integer> root = new TreeNode<>(1, l1, r1);
+
+    res = countUniquePaths(root);
+    assertEquals(5, res);
+
+    /**
+     * Level 0:
+     * 1
+     * Level 1:
+     * 1, 1
+     * Level 2:
+     * 3, null, null, 1
+     * Level 3:
+     * 5, 5, 2, 1
+     * Level 4:
+     * null, null, null, 1, 1, 3, null, null
+     * Level 5:
+     */
+    root = TreeBuilder.fromLevelOrder(
+        1,
+        1, 1,
+        3, null, null, 1,
+        5, 5, 2, 1,
+        null, null, null, 1, 1, 3, null, null,
+        null, null, null, null, null, null, null, 1
+    );
+    res = countUniquePaths(root);
+    assertEquals(5, res);
+    root = TreeBuilder.fromLevelOrder(1
+        , 10, 2,
+        10, null, null, null,
+        10, null);
+
+    res = countUniquePaths(root);
+    assertEquals(2, res);
+  }
+
+  @Test
+  public void maxRootToLeafSumTest() {
+    int res;
+    TreeNode<Integer> root;
+    root = TreeBuilder.fromLevelOrder(
+        1,
+        1, 1,
+        3, null, null, 1,
+        5, 5, 2, 1,
+        null, null, null, 1, 1, 3, null, null,
+        null, null, null, null, null, null, null, 1
+    );
+    res = maxRootToLeafSum(root);
+    assertEquals(11, res);
+
+    root = TreeBuilder.fromLevelOrder(2
+        , 10, 2,
+        10, null, null, null,
+        10, null);
+    res = maxRootToLeafSum(root);
+    assertEquals(32, res);
+
+    root = TreeBuilder.fromLevelOrder(
+        1
+        , 1, 4,
+        3, null, null, null);
+    res = maxRootToLeafSum(root);
+    assertEquals(5, res);
+
+    root = TreeBuilder.fromLevelOrder(
+        (Integer) null);
+    res = maxRootToLeafSum(root);
+    assertEquals(0, res);
+
+    root = TreeBuilder.fromLevelOrder(
+        7);
+    res = maxRootToLeafSum(root);
+    assertEquals(7, res);
+  }
+
+  @Test
+  public void appearsOnEveryPathTest() {
+    boolean res;
+    TreeNode<Integer> root;
+    root = TreeBuilder.fromLevelOrder(
+        1,
+        1, 1,
+        3, null, null, 1,
+        5, 5, 2, 1,
+        null, null, null, 1, 1, 3, null, null,
+        null, null, null, null, null, null, null, 1
+    );
+    res = RecursiveTreeAlgorithms.appearsOnEveryPath(root, 1);
+    assertFalse(res);
+
+    root = TreeBuilder.fromLevelOrder(2
+        , 10, 2,
+        10, null, null, null,
+        10, null);
+    res = RecursiveTreeAlgorithms.appearsOnEveryPath(root, 1);
+    assertFalse(res);
+
+    root = TreeBuilder.fromLevelOrder(
+        1
+        , 1, 4,
+        3, null, null, null);
+    res = RecursiveTreeAlgorithms.appearsOnEveryPath(root, 1);
+    assertFalse(res);
+
+    root = TreeBuilder.fromLevelOrder(
+        (Integer) null);
+    res = RecursiveTreeAlgorithms.appearsOnEveryPath(root, 1);
+    assertFalse(res);
+
+    root = TreeBuilder.fromLevelOrder(
+        7);
+    res = RecursiveTreeAlgorithms.appearsOnEveryPath(root, 1);
+    assertFalse(res);
+
+    root = TreeBuilder.fromLevelOrder(
+        7,
+        1, 2,
+        3, null, null, 1);
+    res = RecursiveTreeAlgorithms.appearsOnEveryPath(root, 1);
+    assertFalse(res);
+
+    root = TreeBuilder.fromLevelOrder(
+        1,
+        1, 1,
+        3, null, null, 1,
+        5, 5, 2, 1,
+        1, null, null, 1, 1, 3, null, null,
+        null, null, null, null, null, null, null, 1
+    );
+    res = RecursiveTreeAlgorithms.appearsOnEveryPath(root, 1);
+    assertFalse(res);
+
+    root = TreeBuilder.fromLevelOrder(
+        1,
+        null, 2,
+        3,
+        null, 1
+    );
+    res = RecursiveTreeAlgorithms.appearsOnEveryPath(root, 1);
+    assertFalse(res);
+  }
 
 }

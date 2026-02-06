@@ -218,11 +218,16 @@ public class RecursiveTreeAlgorithms {
     if (root == null) {
       return 0;
     }
+    // track current count in left and right subtrees;
     int l = countInternalNodes(root.left);
     int r = countInternalNodes(root.right);
 
-    // if at least 1 child exists, add 1 to current count, else 0
-    return root.left != null || root.right != null ? 1 + l + r : 0;
+    // if at least 1 child exists, add 1 to current count;
+    if (isInternal(root)) {
+      return 1 + l + r;
+      // else -> this is not an internal node -> return 0;
+    }
+    return 0;
   }
 
   /**
@@ -243,7 +248,7 @@ public class RecursiveTreeAlgorithms {
     int sumRight = sumLeaves(root.right);
 
     // leaves return here
-    if (root.left == null && root.right == null) {
+    if (isLeaf(root)) {
       return root.val;
     }
     // internals return here
@@ -259,9 +264,9 @@ public class RecursiveTreeAlgorithms {
     }
 
     // if both children exist -> not a chain
-    if (root.left != null && root.right != null) {
+    if (isFull(root)) {
       return false;
-    } else if (root.left == null && root.right == null) {
+    } else if (isLeaf(root)) {
       return true;
     }
 
@@ -293,12 +298,205 @@ public class RecursiveTreeAlgorithms {
     }
 
     int count = countFullNodes(root.left) + countFullNodes(root.right);
-    if ((root.left != null && root.right != null)) {
+    if (isFull(root)) {
       return 1 + count;
     }
     // if no children OR both children -> false
     return count;
   }
 
+  static int findMin(TreeNode<Integer> root) {
+    if (root == null) {
+      return Integer.MAX_VALUE;
+    }
 
+    return Math.min(root.val, Math.min(findMin(root.left), findMin(root.right)));
+  }
+
+  static int sumInternalNodes(TreeNode<Integer> root) {
+    if (root == null) {
+      return 0;
+    }
+    // sum values of internal nodes
+    int sumLeft = sumInternalNodes(root.left);
+    int sumRight = sumInternalNodes(root.right);
+
+    if (isLeaf(root)) {
+      return 0;
+    }
+    return root.val + sumLeft + sumRight;
+  }
+
+  static boolean allPositive(TreeNode<Integer> root) {
+    if (root == null) {
+      return true;
+    }
+    if (root.val < 0) {
+      return false;
+    }
+    return allPositive(root.left) && allPositive(root.right);
+  }
+
+  // Class to track best depth + sum pairs
+  private static class DepthSum {
+
+    int bestDepth;
+    int bestSum;
+  }
+
+  static int longestPathSum(TreeNode<Integer> root) {
+    var ds = new DepthSum();
+    dfs(root, ds, 0, 0);
+    return ds.bestSum;
+  }
+
+  private static void dfs(TreeNode<Integer> node, DepthSum depthSum, int depth, int sum) {
+    if (node == null) {
+      return;
+    }
+    // increment state
+    depth++;
+    sum += node.val;
+    // at any leaf:
+    // write current depth and sum if the current best depth is smaller than the current path depth
+    // OR if depths are equal AND the current best sum is smaller than the current path sum
+    if (isLeaf(node)) {
+      if (depthSum.bestDepth < depth) {
+        depthSum.bestDepth = depth;
+        depthSum.bestSum = sum;
+      } else if (depthSum.bestDepth == depth && depthSum.bestSum < sum) {
+        depthSum.bestSum = sum;
+      }
+      return;
+    }
+
+    dfs(node.left, depthSum, depth, sum);
+    dfs(node.right, depthSum, depth, sum);
+  }
+
+  /**
+   * Count root-to-leaf paths
+   * How many distinct paths exist from root to any leaf?
+   */
+
+  static int countUniquePaths(TreeNode<Integer> node) {
+    if (node == null) {
+      return 0;
+    }
+    if (isLeaf(node)) {
+      return 1;
+
+    }
+    int l = countUniquePaths(node.left);
+    int r = countUniquePaths(node.right);
+    return l + r;
+  }
+
+  /**
+   * Maximum root-to-leaf sum
+   * Return the maximum possible sum from the root down to any leaf.
+   */
+  static int maxRootToLeafSum(TreeNode<Integer> root) {
+    var ds = new DepthSum();
+
+    maxPathSum(root, ds, 0);
+    return ds.bestSum;
+  }
+
+  private static void maxPathSum(TreeNode<Integer> node, DepthSum max, int pathSum) {
+    if (node == null) {
+      return;
+    }
+    pathSum += node.val;
+    if (isLeaf(node)) {
+      if (max.bestSum < pathSum) {
+        max.bestSum = pathSum;
+      }
+    }
+
+    maxPathSum(node.left, max, pathSum);
+    maxPathSum(node.right, max, pathSum);
+  }
+
+  /**
+   * Check if a value exists on every root-to-leaf path
+   * If any path misses it → false.
+   */
+  static boolean appearsOnEveryPath(TreeNode<Integer> node, int x) {
+    if (node == null) {
+      return false;
+    }
+    // at leaf path ends, return recorded state
+    if (isLeaf(node)) {
+      return node.val == x;
+    }
+
+    boolean left = appearsOnEveryPath(node.left, x);
+    boolean right = appearsOnEveryPath(node.right, x);
+
+    // if current == x, done checking
+    if (node.val == x) {
+      return true;
+    }
+
+    return left && right;
+  }
+
+  /**
+   * O(n)
+   */
+  static boolean isBalanced(TreeNode<Integer> root) {
+    return height(root) != -1;
+  }
+
+  static int height(TreeNode<Integer> node) {
+    if (node == null) {
+      return 0;
+    }
+
+    int left = height(node.left);
+    if (left == -1) {
+      return -1; // left subtree already unbalanced
+    }
+
+    int right = height(node.right);
+    if (right == -1) {
+      return -1; // right subtree already unbalanced
+    }
+
+    if (Math.abs(left - right) > 1) {
+      return -1; // current node unbalanced
+    }
+
+    return Math.max(left, right) + 1;
+  }
+
+  /**
+   * true if two binary trees: Have the same structure Contain the same values at corresponding
+   * positions
+   */
+  static boolean areIdentical(TreeNode<Integer> a, TreeNode<Integer> b) {
+    if (a == null && b == null) {
+      return true;
+    }
+    
+    return false;
+  }
+
+  /// ____________________________ HELPERS ____________________________
+
+  // no children
+  private static boolean isLeaf(TreeNode<?> node) {
+    return node.left == null && node.right == null;
+  }
+
+  // at least one child
+  private static boolean isInternal(TreeNode<?> node) {
+    return node.left != null || node.right != null;
+  }
+
+  // both children exist
+  private static boolean isFull(TreeNode<?> node) {
+    return node.left != null && node.right != null;
+  }
 }

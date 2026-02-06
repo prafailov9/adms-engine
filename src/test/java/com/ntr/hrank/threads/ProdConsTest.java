@@ -32,7 +32,7 @@ class ProdConsTest {
 
   void produce() {
     int i = 1;
-    int cycles = 100;
+    int cycles = 10000;
     System.out.println("PRODUCER tries to get in...");
     synchronized (lock) {
       System.out.println("PRODUCER: in!");
