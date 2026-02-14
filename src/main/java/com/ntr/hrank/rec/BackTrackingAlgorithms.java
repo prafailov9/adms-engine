@@ -72,6 +72,28 @@ public class BackTrackingAlgorithms {
 
     }
 
+  /**
+   * You are given:
+   * an array of distinct positive integers nums
+   * a target integer target
+   * Return all combinations where:
+   * numbers can be reused unlimited times
+   * sum of chosen numbers == target
+   * Order inside a combination does not matter.
+   * No duplicate combinations.
+   */
+  static List<List<Integer>> combinationSum(int[] nums, int target) {
+    List<List<Integer>> results = new ArrayList<>();
+    dfs(nums, 0, target, new ArrayList<>(), results);
+    return results;
+
+  }
+
+  // [1, 2, 3]
+  static private void dfs(int[] nums, int i, int target, List<Integer> current,
+      List<List<Integer>> results) {
+
+  }
     public static List<List<Integer>> nQueens(int n) {
         List<List<Integer>> ans = new ArrayList<>();
         queensDfs(n, 0, new ArrayList<>(), ans, new HashSet<>(), new HashSet<>(), new HashSet<>());

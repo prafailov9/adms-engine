@@ -376,8 +376,11 @@ public class RecursionAlgorithms {
       return -1;
     }
     int mid = left + (right - left) / 2;
-    return x == nums[mid] ? mid : x > nums[mid] ? binarySearch(nums, mid + 1, right, x)
-        : binarySearch(nums, left, mid - 1, x);
+    return x == nums[mid]
+        ? mid
+        : x > nums[mid]
+            ? binarySearch(nums, mid + 1, right, x)
+            : binarySearch(nums, left, mid - 1, x);
   }
 
   static int[] mergeSort(int[] nums) {

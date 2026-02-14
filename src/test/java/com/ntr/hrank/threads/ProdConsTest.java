@@ -3,6 +3,7 @@ package com.ntr.hrank.threads;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ProdConsTest {
@@ -79,6 +80,34 @@ class ProdConsTest {
         lock.notifyAll();
       }
     }
+  }
+
+  @Test
+  public void arraySumTest() {
+    long[] arr = new long[]{1, 2, 3, 4, 5};
+
+    Assertions.assertEquals(15, arraySum(arr, 0));
+
+  }
+
+  private long arraySum(long[] arr, int i) {
+    if (i == arr.length) {
+      return 0;
+    }
+
+    return arr[i] + arraySum(arr, i + 1);
+
+  }
+
+  private int countOccurrences(int[] arr, int i, int x) {
+    if (i == arr.length) {
+      return 0;
+    }
+    if (arr[i] == x) {
+      return 1;
+    }
+
+    return 1 + countOccurrences(arr, i + 1, x);
   }
 
 
