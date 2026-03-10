@@ -199,4 +199,9 @@ public class BackTrackingAlgorithms {
     private static void sudokuDfs(char[][] board) {
 
     }
+
+    static int getRandom(int origin, int bound) {
+        return new Random().nextInt(origin, bound);
+    }
+
 }

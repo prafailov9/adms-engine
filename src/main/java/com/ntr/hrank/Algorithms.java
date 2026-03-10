@@ -2411,7 +2411,8 @@ public class Algorithms {
     }
 
     // starting from source,
-    // on each iteration accumulate the current cost of converting source[i] to target[i] if such a transformation exists in the arrays
+    // on each iteration accumulate the
+    // current cost of converting source[i] to target[i] if such a transformation exists in the arrays
 
     for (int i = 0; i < source.length(); i++) {
 
