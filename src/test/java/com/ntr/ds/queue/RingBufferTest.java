@@ -30,7 +30,7 @@ public class RingBufferTest {
         }
 
         for (int i = 1; i <= 5; i++) {
-            buffer.poll();
+            buffer.take();
         }
 
         Assertions.assertEquals(buffer.size(), 0);

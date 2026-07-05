@@ -224,6 +224,125 @@ public class RecursionAlgorithms {
     return firstIndex(nums, i + 1, x);
   }
 
+  static int lastIndex(int[] nums, int i, int x) {
+    if (i == nums.length) {
+      return -1;
+    }
+    int prevResult = lastIndex(nums, i + 1, x);
+    if (prevResult == -1 && x == nums[i]) {
+      return i;
+    }
+    return prevResult;
+  }
+
+  static boolean isArrayPalindrome(int[] nums) {
+    return isArrayPalindrome(nums, 0, nums.length - 1);
+  }
+
+  private static boolean isArrayPalindrome(int[] nums, int left, int right) {
+    if (left >= right) {
+      return true;
+    }
+    if (nums[left] != nums[right]) {
+      return false;
+    }
+
+    return isArrayPalindrome(nums, left + 1, right - 1);
+  }
+
+  static int countZeros(int n) {
+    if (n == 0) {
+      return 1;
+    }
+    if (n >= 1 && n <= 9) {
+      return 0;
+    }
+    if (n % 10 == 0) {
+      return 1 + countZeros(n / 10);
+    }
+    return countZeros(n / 10);
+  }
+
+  static long arrayProduct(int[] nums, int i) {
+    if (i == nums.length) {
+      return 1;
+    }
+    return nums[i] * arrayProduct(nums, i + 1);
+  }
+
+  static boolean isNumeric(String s, int i) {
+    if (i == s.length()) {
+      return true;
+    }
+    if (!Character.isDigit(s.charAt(i))) {
+      return false;
+    }
+    return isNumeric(s, i + 1);
+  }
+
+  static String removeChar(String s, char target) {
+    if (s.isEmpty()) {
+      return "";
+    }
+
+    char current = s.charAt(0);
+    String rest = removeChar(s.substring(1), target);
+
+    if (current == target) {
+      return rest;
+    }
+    return current + rest;
+  }
+
+  static String replacePi(String s) {
+    if (s.isEmpty()) {
+      return "";
+    }
+    String cut = "";
+    if (s.length() >= 2 && s.charAt(0) == 'p' && s.charAt(1) == 'i') {
+      s = s.substring(1);
+      cut += "3.14";
+    }
+    if (cut.isEmpty()) {
+      cut = String.valueOf(s.charAt(0));
+    }
+    return cut + replacePi(s.substring(1));
+  }
+
+  /**
+   * s = "axbxc", target = 'x'
+   * movex("") -> ""
+   * movex("c") -> c + "" = c
+   * movex("xc") -> c + x = cx
+   * movex("bxc") -> b + cx = bcx
+   * movex("xbxc") -> bcx + x = bcxx
+   * movex("axbxc") -> a + bcxx = abcxx
+   */
+  static String moveToEnd(String s, char target) {
+    if (s.isEmpty()) {
+      return "";
+    }
+    char current = s.charAt(0);
+    if (current == target) {
+      return moveToEnd(s.substring(1), target) + current;
+    }
+    return current + moveToEnd(s.substring(1), target);
+  }
+
+  static String removeConsecutiveDuplicates(String s) {
+    if (s.isEmpty()) {
+      return "";
+    }
+    int i = 0;
+    char current = s.charAt(0);
+    while (i < s.length() && current == s.charAt(i)) {
+      i++;
+    }
+    if (i > 0) {
+      s = s.substring(i - 1);
+    }
+    return current + removeConsecutiveDuplicates(s.substring(1));
+  }
 
   /**
    * n = 13579
@@ -356,11 +475,11 @@ public class RecursionAlgorithms {
    * ==> reverse("emily") -> ylime
    */
   static String reverse(String str) {
-    if (str.length() <= 1) {
-      return str;
+    if (str.isEmpty()) {
+      return "";
     }
-    return str.charAt(str.length() - 1)
-        + reverse(str.substring(0, str.length() - 1));
+    return reverse(str.substring(1)) + str.charAt(0);
+
   }
 
   /**
@@ -376,11 +495,8 @@ public class RecursionAlgorithms {
       return -1;
     }
     int mid = left + (right - left) / 2;
-    return x == nums[mid]
-        ? mid
-        : x > nums[mid]
-            ? binarySearch(nums, mid + 1, right, x)
-            : binarySearch(nums, left, mid - 1, x);
+    return x == nums[mid] ? mid : x > nums[mid] ? binarySearch(nums, mid + 1, right, x)
+        : binarySearch(nums, left, mid - 1, x);
   }
 
   static int[] mergeSort(int[] nums) {
@@ -390,12 +506,11 @@ public class RecursionAlgorithms {
     }
     // determine split
     int mid = n / 2;
-    // Split into two halves with ranges:
-    // left  = nums[0 .. mid)
-    // right = nums[mid .. n)
-    // for odd n, the right half will contain one extra element.
+
+    // Split into two halves with ranges
     int[] left = new int[mid];
     int[] right = new int[n - mid];
+
     // populate arrays
     System.arraycopy(nums, 0, left, 0, mid);
     System.arraycopy(nums, mid, right, 0, n - mid);

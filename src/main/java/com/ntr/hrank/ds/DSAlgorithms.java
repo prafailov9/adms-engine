@@ -8,6 +8,26 @@ import java.util.Set;
 
 public class DSAlgorithms {
 
+  public static int binarySearchIterative(int[] arr, int target) {
+    if (arr.length == 0) {
+      return -1;
+    }
+    int low = 0, high = arr.length;
+
+    while (low <= high) {
+      int mid = low + (high - low) / 2;
+      if (arr[mid] == target) {
+        return mid;
+      }
+      if (arr[mid] > target) {
+        high = mid - 1;
+      } else {
+        low = mid + 1;
+      }
+    }
+    return -1;
+  }
+
   /**
    * Given an integer array nums, return true if
    * any value appears at least twice, otherwise return false.
@@ -89,8 +109,34 @@ public class DSAlgorithms {
       }
       map.put(nums[i], i);
     }
-
     return new int[]{};
+  }
+
+
+  public static List<List<String>> groupAnagrams(String[] strs) {
+    return null;
+  }
+
+  /**
+   * You’re given two collections of integers.
+   * You need to find the elements that appear in both.
+   * The output must contain unique values only (so duplicates don’t matter beyond presence).
+   * Order is usually irrelevant.
+   * This is more about membership and uniqueness than counting or ordering.
+   * I: nums1 = [1,2,2,1]
+   * nums2 = [2,2]
+   * O: [2]
+   */
+  public static int[] intersection(int[] nums1, int[] nums2) {
+    int len = Math.max(nums2.length, nums1.length);
+    Set<Integer> set = new HashSet<>();
+    int[] res = new int[len];
+    int i = 0;
+    while (i < nums2.length || i < nums1.length) {
+
+      i++;
+    }
+    return res;
   }
 
   /*** _____________________ SLIDING WINDOW PRACTICE
@@ -221,32 +267,44 @@ public class DSAlgorithms {
    * Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
    * Output: 6
    */
-  public static int longestOnes(int[] nums, int k) {
+  public static int longestOnes(int[] arr, int k) {
     //Count zeros
     //Shrink when zeros > k
+    int zeros = 0;
+    int max = 0;
+    int j = 0;
+    for (int i = 0; i < arr.length; i++) {
+      if (arr[i] == 0) {
+        zeros++;
+      }
+      while (zeros > k) {
+        if (arr[j] == 0) {
+          zeros--;
+        }
+        j++;
+      }
+      max = Math.max(i - j + 1, max);
+    }
+    return max;
+  }
+
+  /**
+   * Given a string s and an integer k,
+   * you may replace at most k characters.
+   * <p>
+   * Return the length of the longest substring
+   * that can be turned into all the same character.
+   */
+  public static int characterReplacement(String s, int k) {
+    // valid: replacements_needed <= k
+    // invalid: replacements_needed > k
+    // replacements_needed = window_size − max_frequency_in_window
+    int j = 0;
+    int count = 0;
+    for (int i = 0; i < s.length(); i++) {
+
+    }
     return 1;
   }
-
-  /**
-   * I: ["eat","tea","tan","ate","nat","bat"]
-   * O: [
-   * ["eat","tea","ate"],
-   * ["tan","nat"],
-   * ["bat"]
-   * ]
-   */
-  public static List<List<String>> groupAnagrams(String[] strs) {
-    return null;
-  }
-
-  /**
-   * I: nums1 = [1,2,2,1]
-   * nums2 = [2,2]
-   * O: [2]
-   */
-  public static int[] intersection(int[] nums1, int[] nums2) {
-    return new int[]{};
-  }
-
 
 }

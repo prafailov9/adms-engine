@@ -2,7 +2,7 @@ package com.ntr.concurrent.usethreads.racecond;
 
 public class RaceConditionMain {
 
-  public static final Integer ITERATIONS = 100_0;
+  public static final Integer ITERATIONS = 100;
 
   public static void main(String[] args) throws InterruptedException {
 

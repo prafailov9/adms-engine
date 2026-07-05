@@ -1,6 +1,5 @@
 package com.ntr.ds.queue;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
 /**
@@ -24,29 +23,29 @@ public class RingBuffer<E> extends AbstractQueue<E> {
     if (size == capacity) {
       log.info("Queue is full. Overwriting last element");
       overwrite(newNode);
-      rear.data = newNode.data;
+      head.value = newNode.value;
     } else if (isEmpty()) {
-      front = rear = newNode;
+      tail = head = newNode;
     } else {
-      front.next = newNode;
-      front = newNode;
-      front.next = rear;
+      tail.next = newNode;
+      tail = newNode;
+      tail.next = head;
     }
     size++;
   }
 
   @Override
-  public E poll() {
+  public E take() {
     if (isEmpty()) {
       log.info("Queue is empty.");
       return null;
     }
-    E data = rear.data;
-    if (rear == front) {
-      rear = front = null;
+    E data = head.value;
+    if (head == tail) {
+      head = tail = null;
     } else {
-      front.next = rear.next;
-      rear = rear.next;
+      tail.next = head.next;
+      head = head.next;
     }
 
     size--;
@@ -55,7 +54,7 @@ public class RingBuffer<E> extends AbstractQueue<E> {
 
   @Override
   public E peek() {
-    return rear.data;
+    return head.value;
   }
 
   public int capacity() {
@@ -68,10 +67,10 @@ public class RingBuffer<E> extends AbstractQueue<E> {
    * @param newNode - the node to add
    */
   private void overwrite(final Node<E> newNode) {
-    rear.data = newNode.data;
-    newNode.next = rear.next;
-    rear = newNode;
-    front.next = rear;
+    head.value = newNode.value;
+    newNode.next = head.next;
+    head = newNode;
+    tail.next = head;
   }
 
 }

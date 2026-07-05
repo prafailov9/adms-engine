@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Assertions;
 
 import java.util.Iterator;
 
-public class QueueImplTest {
+public class LinkedQueueTest {
 
-    private Queue<Integer> queue = new QueueImpl<>();
+    private Queue<Integer> queue = new LinkedQueue<>();
 
 
     @Test
@@ -25,7 +25,7 @@ public class QueueImplTest {
         }
 
         for (int i = 1; i <= 5; i++) {
-            queue.poll();
+            queue.take();
         }
 
         Assertions.assertEquals(queue.size(), 0);

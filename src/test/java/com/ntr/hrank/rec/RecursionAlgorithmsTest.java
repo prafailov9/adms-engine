@@ -1,18 +1,26 @@
 package com.ntr.hrank.rec;
 
+import static com.ntr.hrank.rec.RecursionAlgorithms.arrayProduct;
 import static com.ntr.hrank.rec.RecursionAlgorithms.arraySum;
 import static com.ntr.hrank.rec.RecursionAlgorithms.binarySearch;
 import static com.ntr.hrank.rec.RecursionAlgorithms.countDigits;
 import static com.ntr.hrank.rec.RecursionAlgorithms.countOccurrences;
+import static com.ntr.hrank.rec.RecursionAlgorithms.countZeros;
 import static com.ntr.hrank.rec.RecursionAlgorithms.factorial;
 import static com.ntr.hrank.rec.RecursionAlgorithms.findMax;
 import static com.ntr.hrank.rec.RecursionAlgorithms.findMin;
 import static com.ntr.hrank.rec.RecursionAlgorithms.firstIndex;
+import static com.ntr.hrank.rec.RecursionAlgorithms.isArrayPalindrome;
+import static com.ntr.hrank.rec.RecursionAlgorithms.isNumeric;
 import static com.ntr.hrank.rec.RecursionAlgorithms.isPalindrome;
 import static com.ntr.hrank.rec.RecursionAlgorithms.isSorted;
+import static com.ntr.hrank.rec.RecursionAlgorithms.lastIndex;
 import static com.ntr.hrank.rec.RecursionAlgorithms.mergeSort;
+import static com.ntr.hrank.rec.RecursionAlgorithms.moveToEnd;
 import static com.ntr.hrank.rec.RecursionAlgorithms.power;
 import static com.ntr.hrank.rec.RecursionAlgorithms.printNumbers;
+import static com.ntr.hrank.rec.RecursionAlgorithms.removeChar;
+import static com.ntr.hrank.rec.RecursionAlgorithms.removeConsecutiveDuplicates;
 import static com.ntr.hrank.rec.RecursionAlgorithms.reverse;
 import static com.ntr.hrank.rec.RecursionAlgorithms.sumDigits;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -142,6 +150,84 @@ class RecursionAlgorithmsTest {
     res = firstIndex(new int[]{0}, 0, 1);
     assertEquals(-1, res);
 
+  }
+
+  @Test
+  public void lastIndexTest() {
+    assertEquals(3, lastIndex(new int[]{5, 1, 2, 1}, 0, 1));
+    assertEquals(6, lastIndex(new int[]{5, 1, 2, 1, 3, 2, 3, 5, 7, 7, 9}, 0, 3));
+    assertEquals(0, lastIndex(new int[]{5, 1, 2, 1}, 0, 5));
+    assertEquals(-1, lastIndex(new int[]{0}, 0, 1));
+    assertEquals(0, lastIndex(new int[]{5}, 0, 5));
+
+  }
+
+  @Test
+  public void isArrayPalindromeTest() {
+    assertTrue(isArrayPalindrome(new int[]{1, 2, 1}));
+    assertTrue(isArrayPalindrome(new int[]{}));
+    assertTrue(isArrayPalindrome(new int[]{1}));
+    assertTrue(isArrayPalindrome(new int[]{1, 2, 1, 2, 1, 2, 1}));
+    assertTrue(isArrayPalindrome(new int[]{1, 2, 1, 3, 1, 2, 1}));
+
+    assertFalse(isArrayPalindrome(new int[]{1, 2, 1, 3, 1, 2, 1, 2}));
+    assertFalse(isArrayPalindrome(new int[]{1, 2, 1, 2, 1, 2, 1, 2}));
+  }
+
+  @Test
+  public void countZerosTest() {
+    assertEquals(1, countZeros(101));
+    assertEquals(1, countZeros(0));
+    assertEquals(0, countZeros(1));
+
+    assertEquals(0, countZeros(2));
+    assertEquals(1, countZeros(10));
+    assertEquals(0, countZeros(11));
+    assertEquals(0, countZeros(1111111111));
+    assertEquals(7, countZeros(1000000011));
+
+  }
+
+  @Test
+  public void arrayProductTest() {
+    assertEquals(10, arrayProduct(new int[]{2, 5}, 0));
+    assertEquals(120, arrayProduct(new int[]{1, 2, 3, 4, 5}, 0));
+    assertEquals(1, arrayProduct(new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 0));
+  }
+
+  @Test
+  public void isNumericTest() {
+    assertTrue(isNumeric("123", 0));
+    assertTrue(isNumeric("0", 0));
+    assertTrue(isNumeric("1234567", 0));
+
+    assertTrue(isNumeric("", 0));
+    assertFalse(isNumeric("1234567a8912313", 0));
+    assertFalse(isNumeric("a", 0));
+  }
+
+  @Test
+  public void removeCharTest() {
+    assertEquals("aaac", removeChar("aabac", 'b'));
+    assertEquals("bc", removeChar("aabac", 'a'));
+    assertEquals("", removeChar("", 'y'));
+  }
+
+  @Test
+  public void replacePiTest() {
+    assertEquals("aa3.14c", RecursionAlgorithms.replacePi("aapic"));
+    assertEquals("x3.143.14x", RecursionAlgorithms.replacePi("xpipix"));
+  }
+
+  @Test
+  public void moveToEndTest() {
+    assertEquals("abcxx", moveToEnd("axbxc", 'x'));
+  }
+
+  @Test
+  public void removeConsecutiveDuplicatesTest() {
+    assertEquals("abc", removeConsecutiveDuplicates("aaabbbccc"));
+    assertEquals("abcda", removeConsecutiveDuplicates("aaabbccdaa"));
   }
 
   @Test

@@ -2,6 +2,7 @@ package com.ntr.hrank.ds;
 
 import static com.ntr.hrank.ds.DSAlgorithms.isAnagram;
 import static com.ntr.hrank.ds.DSAlgorithms.lengthOfLongestSubstring;
+import static com.ntr.hrank.ds.DSAlgorithms.longestOnes;
 import static com.ntr.hrank.ds.DSAlgorithms.maxSumSubarray;
 import static com.ntr.hrank.ds.DSAlgorithms.minSubarrayLen;
 import static com.ntr.hrank.ds.DSAlgorithms.subarrayAverages;
@@ -68,6 +69,14 @@ class DSAlgorithmsTest {
 
     res = minSubarrayLen(7, new int[]{2, 3, 1, 2, 4, 3, 2, 5, 50, 1, 2, 3, 3, 1});
     assertEquals(1, res);
+  }
+
+  @Test
+  public void longestOnesTest() {
+    int res = longestOnes(new int[]{1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0}, 2);
+
+    assertEquals(6, res);
+
   }
 
 }

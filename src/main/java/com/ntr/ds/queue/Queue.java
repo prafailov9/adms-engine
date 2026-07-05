@@ -4,7 +4,7 @@ public interface Queue<E> extends Iterable<E> {
 
     void offer(E data);
 
-    E poll();
+    E take();
 
     E peek();
 

@@ -85,47 +85,6 @@ public class RoundRobin {
     }
   }
 
-
-  private void runV2(int myTurn) {
-    synchronized (lock) {
-      // start of cycle
-      while (!done) {
-        // while its turn: count, reset if counter hits limit, notify
-        if (currentTurn == myTurn) {
-          System.out.printf("%s%n", currentTurn);
-          currentTurn++;
-
-          // notify all waiting threads that the lock will be released
-          lock.notifyAll();
-
-          // reset wait queue if on turn N
-          if (currentTurn == N) {
-            System.out.printf("Cycle %s done. %n%n", cycles);
-            // break on last cycle and notify all others waiting
-            if (cycles >= K) {
-              done = true;
-              lock.notifyAll();
-              break;
-            } else {
-              cycles++;
-              currentTurn = 0;
-            }
-          }
-        }
-        // wait to get its turn.
-        // any thread that wakes up should see the current state of the cycle.
-        while (currentTurn != myTurn && !done) {
-          try {
-            lock.wait();
-          } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return;
-          }
-        }
-      }
-    }
-  }
-
   public static void main(String[] args) {
 
     RoundRobin roundRobin = new RoundRobin(10, 10000);
@@ -176,7 +135,6 @@ public class RoundRobin {
     }
 
     private void run(int id) {
-      // optional: buffer output to avoid println cost
       StringBuilder sb = new StringBuilder(1024);
 
       for (int cycle = 1; cycle <= K && !done; cycle++) {
@@ -186,12 +144,10 @@ public class RoundRobin {
         // do work
         sb.append(id).append('\n');
 
-        // last thread prints cycle marker (optional)
         if (id == N - 1) {
           sb.append("Cycle ").append(cycle).append(" done.\n\n");
         }
 
-        // pass baton
         int next = (id + 1) % N;
         sems[next].release();
       }
@@ -205,7 +161,6 @@ public class RoundRobin {
         }
       }
 
-      // emit buffered output once (MUCH faster than println per step)
       System.out.print(sb);
     }
   }

@@ -4,7 +4,7 @@ import com.ntr.jvcalc.tokenizer.Token;
 
 import java.util.List;
 
-public interface Parser {
+public interface ExpressionParser {
 
-    String toPostfix(List<Token> tokens);
+  String toPostfix(List<Token> tokens);
 }

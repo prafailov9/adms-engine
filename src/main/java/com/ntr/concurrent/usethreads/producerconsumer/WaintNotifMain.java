@@ -25,16 +25,21 @@ public class WaintNotifMain {
    */
 
   public static void main(String[] args) throws InterruptedException {
-    final ProdCons prodCons = new ProdCons(10, 50000);
+    var pc = new ProducerConsumer(5);
 
-    Thread prod = new Thread(prodCons::produce);
-    Thread cons = new Thread(prodCons::consume);
+    Thread prod = new Thread(pc::produce);
+    Thread cons = new Thread(pc::consume);
 
     prod.start();
     cons.start();
 
+    Thread.sleep(3_000);
+    prod.interrupt();
+
     prod.join();
     cons.join();
+
+    System.out.println("ProdCons finished");
 
   }
 

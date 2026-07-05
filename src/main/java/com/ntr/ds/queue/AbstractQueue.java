@@ -1,13 +1,14 @@
 package com.ntr.ds.queue;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
 public abstract class AbstractQueue<E> implements Queue<E> {
 
-  protected Node<E> front;
-  protected Node<E> rear;
+  protected Node<E> head;
+  protected Node<E> tail;
 
   protected int size;
 
@@ -25,15 +26,15 @@ public abstract class AbstractQueue<E> implements Queue<E> {
   public abstract void offer(E data);
 
   @Override
-  public abstract E poll();
+  public abstract E take();
 
   protected static class Node<E> {
 
     Node<E> next;
-    E data;
+    E value;
 
-    private Node(E data) {
-      this.data = data;
+    private Node(E value) {
+      this.value = value;
     }
 
     static <E> Node<E> of(E data) {
@@ -70,24 +71,26 @@ public abstract class AbstractQueue<E> implements Queue<E> {
 
     @Override
     public boolean hasNext() {
-      if (current == null && rear != null) {
-        return true;
-      } else if (current != null) {
+      if (current != null) {
         return current.next != null;
       }
-      return false;
+
+      return head != null;
+
     }
 
     @Override
     public E next() {
-      if (current == null && rear != null) {
-        current = rear;
-        return rear.data;
-      } else if (current != null) {
-        current = current.next;
-        return current.data;
+      if (!hasNext()) {
+        throw new NoSuchElementException();
       }
-      throw new RuntimeException("No such element");
+      if (current != null) {
+        current = current.next;
+      } else {
+        current = head;
+      }
+
+      return current.value;
     }
   }
 

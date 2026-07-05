@@ -1,29 +1,29 @@
 package com.ntr.ds.queue;
 
-public class QueueImpl<E> extends AbstractQueue<E> {
+public class LinkedQueue<E> extends AbstractQueue<E> {
 
   @Override
   public void offer(E data) {
-    var newNode = Node.of(data);
+    var n = Node.of(data);
 
     if (isEmpty()) {
-      front = rear = newNode;
+      tail = head = n;
     } else {
-      front.next = newNode;
-      front = newNode;
+      tail.next = n;
+      tail = n;
     }
     size++;
   }
 
   @Override
-  public E poll() {
+  public E take() {
     if (isEmpty()) {
       throw new RuntimeException("Queue is empty!");
     }
-    E data = rear.data;
-    rear = rear.next;
-    if (rear == null) {
-      front = null;
+    E data = head.value;
+    head = head.next;
+    if (head == null) {
+      tail = null;
     }
     size--;
     return data;
@@ -31,7 +31,7 @@ public class QueueImpl<E> extends AbstractQueue<E> {
 
   @Override
   public E peek() {
-    return rear.data;
+    return head.value;
   }
 
 }
